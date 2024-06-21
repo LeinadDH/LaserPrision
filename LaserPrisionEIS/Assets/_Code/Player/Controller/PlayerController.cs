@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private Transform _cameraTransform;
-    [SerializeField] private Animator _animator;  // Añadir referencia al Animator
+    [SerializeField] private Animator _animator; 
 
     [Space(5f)]
     [Header("Configurations")]
@@ -52,25 +52,21 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Calcular la dirección de la cámara
         Vector3 cameraForward = Vector3.Scale(_cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 cameraRight = Vector3.Scale(_cameraTransform.right, new Vector3(1, 0, 1)).normalized;
 
-        // Calcular la dirección de movimiento en relación con la cámara
         Vector3 moveDirection = _moveInput.x * cameraRight + _moveInput.y * cameraForward;
 
-        // Mover al jugador
         _rb.MovePosition(transform.position + moveDirection * _speed * Time.fixedDeltaTime);
 
-        // Girar al jugador en la dirección del movimiento
         if (moveDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRotation, Time.fixedDeltaTime * _speed));
         }
 
-        float speed = moveDirection.magnitude;  // Calcular la velocidad como la magnitud de moveDirection
-        _animator.SetFloat("Speed", speed);  // Establecer el valor de "Speed"
+        float speed = moveDirection.magnitude;  
+        _animator.SetFloat("Speed", speed);  
     }
  
 }
